@@ -1,4 +1,5 @@
 #include<iostream>
+#include<stack>
 using namespace std;
 
 // node structure
@@ -30,20 +31,25 @@ void printList(struct node* head)
 	cout<<"->NULL"<<endl;
 }
 
-//function to detect loop using floyed's cycle finding algorithm
-bool isLoop(struct node *head)
+//function to check linkedlist is a palindrome or not
+bool isPalindrome(struct node *head)
 {
-	struct node *slow,*fast;
-	slow = head; fast=head;
-
-	while(slow && fast && fast->next)
-	{
-		slow = slow->next;
-		fast = fast->next->next;
-		if(slow==fast)
-			return(true);
-	}
-	return(false);
+    //Your code here
+    stack<int> st;
+    struct node *temp=head;
+    while(temp!=NULL)
+    {
+        st.push(temp->data);
+        temp=temp->next;
+    }
+    while(!st.empty())
+    {
+        if(st.top()!=head->data)
+        return(false);
+        st.pop();
+        head=head->next;
+    }
+    return(true);
 }
 
 
@@ -54,11 +60,10 @@ int main(int argc, char const *argv[])
 	head = newnode(2);
 	head->next = newnode(7);
 	head->next->next = newnode(10);
-	head->next->next->next = head;
-	if(isLoop(head))
-	cout<<"Loop is present"<<endl;
+	printList(head);
+	if(isPalindrome(head))
+	cout<<"Yes,palindrome"<<endl;
 	else
-	cout<<"No loop present"<<endl;	
-
+	cout<<"No, not palindrome"<<endl;	
 	return 0;
 }

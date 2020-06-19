@@ -30,8 +30,21 @@ void printList(struct node* head)
 	cout<<"->NULL"<<endl;
 }
 
+//function to count the length of loop
+int loopLength(struct node *slow)
+{
+	int len=1;
+	struct node* temp = slow;
+	while(temp->next!=slow)
+	{
+		len += 1;
+		temp = temp->next;
+	}
+	return(len);
+}
+
 //function to detect loop using floyed's cycle finding algorithm
-bool isLoop(struct node *head)
+int isLoop(struct node *head)
 {
 	struct node *slow,*fast;
 	slow = head; fast=head;
@@ -41,9 +54,9 @@ bool isLoop(struct node *head)
 		slow = slow->next;
 		fast = fast->next->next;
 		if(slow==fast)
-			return(true);
+		return(loopLength(slow));
 	}
-	return(false);
+	return(0);
 }
 
 
@@ -55,8 +68,9 @@ int main(int argc, char const *argv[])
 	head->next = newnode(7);
 	head->next->next = newnode(10);
 	head->next->next->next = head;
-	if(isLoop(head))
-	cout<<"Loop is present"<<endl;
+	int len = isLoop(head);
+	if(len)
+	cout<<"Loop is present. Loop Length : "<<len<<endl;
 	else
 	cout<<"No loop present"<<endl;	
 

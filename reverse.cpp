@@ -30,22 +30,21 @@ void printList(struct node* head)
 	cout<<"->NULL"<<endl;
 }
 
-//function to detect loop using floyed's cycle finding algorithm
-bool isLoop(struct node *head)
+void reverse(struct node **head)
 {
-	struct node *slow,*fast;
-	slow = head; fast=head;
+	struct node *cur,*prev,*next;
 
-	while(slow && fast && fast->next)
+	cur = *head; prev = NULL;
+
+	while(cur!=NULL)
 	{
-		slow = slow->next;
-		fast = fast->next->next;
-		if(slow==fast)
-			return(true);
+		next = cur->next;
+		cur->next = prev;
+		prev = cur;
+		cur = next;
 	}
-	return(false);
+	*head = prev;
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -54,11 +53,10 @@ int main(int argc, char const *argv[])
 	head = newnode(2);
 	head->next = newnode(7);
 	head->next->next = newnode(10);
-	head->next->next->next = head;
-	if(isLoop(head))
-	cout<<"Loop is present"<<endl;
-	else
-	cout<<"No loop present"<<endl;	
-
+	cout<<"Before : ";
+	printList(head);
+	reverse(&head);
+	cout<<"After : ";
+	printList(head);	
 	return 0;
 }

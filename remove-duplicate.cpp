@@ -30,22 +30,22 @@ void printList(struct node* head)
 	cout<<"->NULL"<<endl;
 }
 
-//function to detect loop using floyed's cycle finding algorithm
-bool isLoop(struct node *head)
+//function to delete duplicate data from the linkedlist
+void removeDuplicates(struct node **head)
 {
-	struct node *slow,*fast;
-	slow = head; fast=head;
-
-	while(slow && fast && fast->next)
-	{
-		slow = slow->next;
-		fast = fast->next->next;
-		if(slow==fast)
-			return(true);
-	}
-	return(false);
+ struct node *root = *head;
+ while(root!=NULL)
+ {
+         if(root->next && root->data==root->next->data)
+         {
+             struct node *temp = root->next;
+             root->next = temp->next;
+             free(temp);
+         }
+         else
+         root = root->next;
+ }
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -53,12 +53,12 @@ int main(int argc, char const *argv[])
 
 	head = newnode(2);
 	head->next = newnode(7);
-	head->next->next = newnode(10);
-	head->next->next->next = head;
-	if(isLoop(head))
-	cout<<"Loop is present"<<endl;
-	else
-	cout<<"No loop present"<<endl;	
-
+	head->next->next = newnode(7);
+	head->next->next->next = newnode(10);
+	cout<<"Before : ";
+	printList(head);
+	removeDuplicates(&head);
+	cout<<"After : ";
+	printList(head);		
 	return 0;
 }
